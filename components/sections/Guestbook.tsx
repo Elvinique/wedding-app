@@ -45,21 +45,19 @@ export default function Guestbook() {
         const fetchMessages = async () => {
             try {
                 const response = await api.get("/api/guestbook");
-                if (response.data.messages.length > 0) {
-                    setMessages(response.data.messages.map((m: {
-                        id: string;
-                        name: string;
-                        message: string;
-                        created_at?: string;
-                    }) => ({
-                        id: m.id,
-                        name: m.name,
-                        message: m.message,
-                        timestamp: new Date(m.created_at as string),
-                    })));
+                const raw = response.data.messages;
+                if (raw && raw.length > 0) {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    const mapped = raw.map((m: any) => ({
+                        id: String(m.id),
+                        name: String(m.name),
+                        message: String(m.message),
+                        timestamp: m.created_at ? new Date(String(m.created_at)) : new Date(),
+                    }));
+                    setMessages(mapped);
                 }
-            } catch (error) {
-                console.error("Failed to fetch messages:", error);
+            } catch (err) {
+                console.error("Failed to fetch messages:", err);
             }
         };
         fetchMessages();
