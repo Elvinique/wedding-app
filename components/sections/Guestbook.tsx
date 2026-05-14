@@ -10,8 +10,6 @@ interface GuestMessage {
     name: string;
     message: string;
     timestamp: Date;
-    createdAt?: string;
-    created_at?: string;
 }
 
 const initialMessages: GuestMessage[] = [
@@ -48,9 +46,16 @@ export default function Guestbook() {
             try {
                 const response = await api.get("/api/guestbook");
                 if (response.data.messages.length > 0) {
-                    setMessages(response.data.messages.map((m: GuestMessage) => ({
-                        ...m,
-                        timestamp: new Date(m.createdAt || m.created_at || Date.now()),
+                    setMessages(response.data.messages.map((m: {
+                        id: string;
+                        name: string;
+                        message: string;
+                        created_at?: string;
+                    }) => ({
+                        id: m.id,
+                        name: m.name,
+                        message: m.message,
+                        timestamp: m.created_at ? new Date(m.created_at) : new Date(),
                     })));
                 }
             } catch (error) {
