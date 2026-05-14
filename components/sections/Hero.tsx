@@ -4,12 +4,14 @@ import { motion } from "framer-motion";
 import { useCountdown } from "@/hooks/useCountdown";
 import { weddingConfig } from "@/lib/wedding.config";
 
-const fadeUp = {
+import type { Variants } from "framer-motion";
+
+const fadeUp: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: (delay = 0) => ({
         opacity: 1,
         y: 0,
-        transition: { duration: 0.9, ease: "easeOut" as const, delay },
+        transition: { duration: 0.9, ease: "easeOut", delay },
     }),
 };
 
