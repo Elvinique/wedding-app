@@ -55,7 +55,7 @@ export default function Guestbook() {
                         id: m.id,
                         name: m.name,
                         message: m.message,
-                        timestamp: m.created_at ? new Date(m.created_at) : new Date(),
+                        timestamp: new Date(m.created_at as string),
                     })));
                 }
             } catch (error) {
