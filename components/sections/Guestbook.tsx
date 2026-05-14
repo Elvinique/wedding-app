@@ -50,7 +50,7 @@ export default function Guestbook() {
                 if (response.data.messages.length > 0) {
                     setMessages(response.data.messages.map((m: GuestMessage) => ({
                         ...m,
-                        timestamp: new Date(m.createdAt || m.created_at),
+                        timestamp: new Date(m.createdAt || m.created_at || Date.now()),
                     })));
                 }
             } catch (error) {
