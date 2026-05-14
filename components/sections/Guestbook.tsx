@@ -42,25 +42,18 @@ export default function Guestbook() {
     const [submitted, setSubmitted] = useState(false);
 
     useEffect(() => {
-        const fetchMessages = async () => {
-            try {
-                const response = await api.get("/api/guestbook");
-                const raw = response.data.messages;
-                if (raw && raw.length > 0) {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    const mapped = raw.map((m: any) => ({
-                        id: String(m.id),
-                        name: String(m.name),
-                        message: String(m.message),
-                        timestamp: m.created_at ? new Date(String(m.created_at)) : new Date(),
-                    }));
-                    setMessages(mapped);
-                }
-            } catch (err) {
-                console.error("Failed to fetch messages:", err);
+        api.get("/api/guestbook").then((response) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const raw: any[] = response.data.messages || [];
+            if (raw.length > 0) {
+                setMessages(raw.map((m) => ({
+                    id: String(m.id ?? Date.now()),
+                    name: String(m.name ?? ""),
+                    message: String(m.message ?? ""),
+                    timestamp: new Date(m.created_at ?? 0),
+                })));
             }
-        };
-        fetchMessages();
+        }).catch((err) => console.error("Failed to fetch messages:", err));
     }, []);
 
     const MAX_CHARS = 200;
