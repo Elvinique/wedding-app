@@ -1,26 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap');
+
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-gold: #C6A664;
+  --color-gold-light: #D4BA83;
+  --color-gold-dark: #A8893F;
+  --color-cream: #F7F2EA;
+  --color-cream-dark: #EDE4D3;
+  --color-charcoal: #1F1F1F;
+  --color-charcoal-light: #2E2E2E;
+
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "DM Sans", Inter, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-charcoal);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .btn-gold {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    background-color: var(--color-gold);
+    color: white;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    border: 1px solid var(--color-gold);
+    transition: all 0.3s ease;
+  }
+
+  .btn-gold:hover {
+    background-color: transparent;
+    color: var(--color-gold);
+  }
+
+  .btn-outline {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    background-color: transparent;
+    color: var(--color-gold);
+    font-family: var(--font-sans);
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    border: 1px solid var(--color-gold);
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline:hover {
+    background-color: var(--color-gold);
+    color: white;
+  }
+
+  .section-title {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: var(--color-charcoal);
+    line-height: 1.2;
+  }
+
+  .section-subtitle {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+  }
+
+  .gold-divider {
+    width: 4rem;
+    height: 1px;
+    background-color: var(--color-gold);
+    margin: 1.5rem auto;
+  }
 }

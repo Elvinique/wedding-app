@@ -9,12 +9,23 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "@tanstack/react-query": "^5.100.10",
+    "@types/qrcode": "^1.5.6",
+    "axios": "^1.16.1",
+    "framer-motion": "^12.38.0",
     "next": "16.2.6",
+    "qrcode": "^1.5.4",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "react-hook-form": "^7.75.0",
+    "react-qr-code": "^2.0.21",
+    "yet-another-react-lightbox": "^3.32.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@tailwindcss/typography": "^0.5.19",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
