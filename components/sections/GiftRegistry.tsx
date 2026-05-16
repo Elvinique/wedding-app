@@ -6,12 +6,12 @@ import { motion } from "framer-motion";
 const bankAccounts = [
     {
         bank: "First Bank Nigeria",
-        accountName: "Faith Adeyemi",
+        accountName: "Faith Dumpe",
         accountNumber: "3012345678",
     },
     {
         bank: "GTBank",
-        accountName: "Joseph Okafor",
+        accountName: "Joseph Dumpe",
         accountNumber: "0123456789",
     },
 ];
