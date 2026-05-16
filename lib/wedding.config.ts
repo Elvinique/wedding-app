@@ -4,7 +4,7 @@ export const weddingConfig = {
         groom: "Joe",
         hashtag: "#FaithAndJoe2026",
     },
-    date: new Date("2025-11-15T14:00:00"),
+    date: new Date("2026-06-15T14:00:00"),
     ceremony: {
         name: "Redeem Christian Church of God",
         address: "Eneka, Port Harcourt",
