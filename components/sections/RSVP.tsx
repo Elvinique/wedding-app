@@ -142,7 +142,7 @@ export default function RSVP() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6 }}
                 >
-                    Kindly Reply By October 1st
+                    Kindly Reply By June 1st
                 </motion.p>
                 <motion.h2
                     className="section-title"
@@ -183,7 +183,7 @@ export default function RSVP() {
                             <InputField label="Full Name" error={errors.fullName?.message}>
                                 <input
                                     {...register("fullName")}
-                                    placeholder="e.g. Chisom Okafor"
+                                    placeholder="e.g. Barile James"
                                     style={inputStyle}
                                 />
                             </InputField>
@@ -192,7 +192,7 @@ export default function RSVP() {
                                 <input
                                     {...register("email")}
                                     type="email"
-                                    placeholder="e.g. chisom@email.com"
+                                    placeholder="e.g. barile@email.com"
                                     style={inputStyle}
                                 />
                             </InputField>
