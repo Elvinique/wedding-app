@@ -8,13 +8,13 @@ export const weddingConfig = {
     ceremony: {
         name: "RCCG Salt and Light Zonal headquarters, Opposite Eneka Secondary School, off Eneka-Igwuruta Road, Port Harcourt.",
         address: "Eneka, Port Harcourt",
-        time: "2:00 PM",
+        time: "9:00 AM",
         mapsUrl: "https://maps.app.goo.gl/PvE2kmUTiMnqvCnr8",
     },
     reception: {
         name: "Daffodil Hotel Banquet Hall, ",
         address: "Atali town, Eneka-Igwuruta Road, Port Harcourt",
-        time: "5:00 PM",
+        time: "12:00 PM",
         mapsUrl: "https://maps.app.goo.gl/8wU4R8A6J8bE1E2H6",
     },
     colors: {
