@@ -89,12 +89,12 @@ export default function Timeline() {
             {/* Timeline */}
             <div
                 style={{
-                    maxWidth: "700px",
+                    maxWidth: "680px",
                     margin: "0 auto",
                     position: "relative",
                 }}
             >
-                {/* Vertical Line */}
+                {/* Vertical Line — hidden on mobile */}
                 <div
                     style={{
                         position: "absolute",
@@ -105,102 +105,96 @@ export default function Timeline() {
                         backgroundColor: "var(--color-gold)",
                         opacity: 0.3,
                         transform: "translateX(-50%)",
+                        display: "none",
                     }}
+                    className="timeline-line"
                 />
 
-                {events.map((event, index) => {
-                    const isLeft = index % 2 === 0;
-
-                    return (
-                        <motion.div
-                            key={event.year}
-                            initial={{ opacity: 0, x: isLeft ? -40 : 40 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true, margin: "-80px" }}
-                            transition={{ duration: 0.7, delay: 0.1 }}
+                {events.map((event, index) => (
+                    <motion.div
+                        key={event.year}
+                        initial={{ opacity: 0, y: 40 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: "-60px" }}
+                        transition={{ duration: 0.7, delay: index * 0.08 }}
+                        style={{
+                            display: "flex",
+                            gap: "1.25rem",
+                            alignItems: "flex-start",
+                            marginBottom: "2rem",
+                        }}
+                    >
+                        {/* Icon Column */}
+                        <div
                             style={{
+                                flexShrink: 0,
+                                width: "2.5rem",
+                                height: "2.5rem",
+                                borderRadius: "50%",
+                                backgroundColor: "var(--color-cream-dark)",
+                                border: "1px solid var(--color-gold)",
                                 display: "flex",
-                                justifyContent: isLeft ? "flex-start" : "flex-end",
-                                paddingBottom: "3rem",
-                                position: "relative",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                fontSize: "0.85rem",
+                                color: "var(--color-gold)",
+                                marginTop: "0.25rem",
                             }}
                         >
-                            {/* Card */}
-                            <div
+                            {event.icon}
+                        </div>
+
+                        {/* Card */}
+                        <div
+                            style={{
+                                flex: 1,
+                                backgroundColor: "white",
+                                padding: "1.5rem",
+                                boxShadow: "0 4px 24px rgba(0,0,0,0.06)",
+                                borderTop: "2px solid var(--color-gold)",
+                            }}
+                        >
+                            {/* Year */}
+                            <span
                                 style={{
-                                    width: "calc(50% - 2rem)",
-                                    backgroundColor: "white",
-                                    padding: "1.5rem",
-                                    boxShadow: "0 4px 24px rgba(0,0,0,0.06)",
-                                    borderTop: "2px solid var(--color-gold)",
-                                    position: "relative",
-                                }}
-                            >
-                                {/* Year */}
-                                <span
-                                    style={{
-                                        fontFamily: "var(--font-sans)",
-                                        fontSize: "0.7rem",
-                                        letterSpacing: "0.25em",
-                                        textTransform: "uppercase",
-                                        color: "var(--color-gold)",
-                                        display: "block",
-                                        marginBottom: "0.4rem",
-                                    }}
-                                >
-                                    {event.year}
-                                </span>
-
-                                {/* Title */}
-                                <h3
-                                    style={{
-                                        fontFamily: "var(--font-serif)",
-                                        fontSize: "1.25rem",
-                                        color: "var(--color-charcoal)",
-                                        marginBottom: "0.6rem",
-                                    }}
-                                >
-                                    {event.title}
-                                </h3>
-
-                                {/* Description */}
-                                <p
-                                    style={{
-                                        fontFamily: "var(--font-sans)",
-                                        fontSize: "0.875rem",
-                                        color: "rgba(31,31,31,0.65)",
-                                        lineHeight: 1.7,
-                                    }}
-                                >
-                                    {event.description}
-                                </p>
-                            </div>
-
-                            {/* Center Icon */}
-                            <div
-                                style={{
-                                    position: "absolute",
-                                    left: "50%",
-                                    top: "1.5rem",
-                                    transform: "translateX(-50%)",
-                                    width: "2.25rem",
-                                    height: "2.25rem",
-                                    borderRadius: "50%",
-                                    backgroundColor: "var(--color-cream)",
-                                    border: "1px solid var(--color-gold)",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    fontSize: "0.75rem",
+                                    fontFamily: "var(--font-sans)",
+                                    fontSize: "0.7rem",
+                                    letterSpacing: "0.25em",
+                                    textTransform: "uppercase",
                                     color: "var(--color-gold)",
-                                    zIndex: 1,
+                                    display: "block",
+                                    marginBottom: "0.4rem",
                                 }}
                             >
-                                {event.icon}
-                            </div>
-                        </motion.div>
-                    );
-                })}
+                                {event.year}
+                            </span>
+
+                            {/* Title */}
+                            <h3
+                                style={{
+                                    fontFamily: "var(--font-serif)",
+                                    fontSize: "1.2rem",
+                                    color: "var(--color-charcoal)",
+                                    marginBottom: "0.6rem",
+                                }}
+                            >
+                                {event.title}
+                            </h3>
+
+                            {/* Description */}
+                            <p
+                                style={{
+                                    fontFamily: "var(--font-sans)",
+                                    fontSize: "0.875rem",
+                                    color: "rgba(31,31,31,0.65)",
+                                    lineHeight: 1.8,
+                                }}
+                            >
+                                {event.description}
+                            </p>
+                        </div>
+                    </motion.div>
+                ))}
             </div>
         </section>
     );
