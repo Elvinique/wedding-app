@@ -9,9 +9,6 @@ const photos = [
     { src: "/images/gallery-1.jpg", alt: "Wedding moment 1" },
     { src: "/images/gallery-2.jpg", alt: "Wedding moment 2" },
     { src: "/images/gallery-3.jpg", alt: "Wedding moment 3" },
-    { src: "/images/gallery-4.jpg", alt: "Wedding moment 4" },
-    { src: "/images/gallery-5.jpg", alt: "Wedding moment 5" },
-    { src: "/images/gallery-6.jpg", alt: "Wedding moment 6" },
 ];
 
 export default function Gallery() {
