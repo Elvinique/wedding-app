@@ -9,7 +9,7 @@ const logistics = [
         lines: [
             "COLOUR OF THE DAY: Mint Green, Burnt Orange, Coffee Brown and White",
             "Ladies: Ankara or lace",
-            "Gentlemen: Agbada or suit in navy or charcoal",
+            "Gentlemen: Agbado or Suit in coffee brown, burnt orange or white",
             "Smart elegant — no casual wear",
         ],
     },
@@ -17,11 +17,10 @@ const logistics = [
         icon: "◷",
         title: "Event Schedule",
         lines: [
+            "9:00 AM — Church Wedding",
             "12:00 PM — Guest Arrival",
-            "2:00 PM — Ceremony Begins",
-            "4:30 PM — Cocktail Hour",
-            "5:00 PM — Reception Opens",
-            "10:00 PM — End of Event",
+            "1:00 PM — Reception Opens",
+            "5:00 PM — End of Event",
         ],
     },
     {
@@ -45,7 +44,7 @@ const logistics = [
         icon: "◐",
         title: "For Enquiry",
         lines: [
-            "Contact: +234 66099976, +234 9039392341",
+            "Contact: +234 8066099976, +234 9039392341, +234 7019082251",
 
         ],
     },
