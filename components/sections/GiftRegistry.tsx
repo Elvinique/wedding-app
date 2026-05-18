@@ -10,9 +10,9 @@ const bankAccounts = [
         accountNumber: "3012345678",
     },
     {
-        bank: "GTBank",
+        bank: "ECOBank",
         accountName: "Joseph Dumpe",
-        accountNumber: "0123456789",
+        accountNumber: "5481086209",
     },
 ];
 

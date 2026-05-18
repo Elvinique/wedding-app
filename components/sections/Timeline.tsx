@@ -4,28 +4,28 @@ import { motion } from "framer-motion";
 
 const events = [
     {
-        year: "2020",
+        year: "October 2025",
         title: "First Meeting",
         description:
             "Two souls crossed paths at a mutual friend's gathering in Lagos. A glance, a smile, and the rest was destiny.",
         icon: "✦",
     },
     {
-        year: "2021",
+        year: "2026",
         title: "First Date",
         description:
             "A quiet dinner at a rooftop restaurant overlooking the Lagos skyline. They talked until the city lights went dim.",
         icon: "♡",
     },
     {
-        year: "2022",
+        year: "2026",
         title: "The Proposal",
         description:
             "Under a canopy of stars on the Lekki waterfront, he got down on one knee. She said yes before he finished the sentence.",
         icon: "◇",
     },
     {
-        year: "2023",
+        year: "2026",
         title: "Engagement",
         description:
             "Surrounded by family and friends, they celebrated their love the Nigerian way — with music, food, and plenty of dancing.",

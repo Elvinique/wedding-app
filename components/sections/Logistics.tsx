@@ -7,8 +7,8 @@ const logistics = [
         icon: "◈",
         title: "Dress Code",
         lines: [
-            "Aso-Ebi: Gold & Champagne",
-            "Ladies: Ankara or lace in gold tones",
+            "COLOUR OF THE DAY: Mint Green, Burnt Orange, Coffee Brown and White",
+            "Ladies: Ankara or lace",
             "Gentlemen: Agbada or suit in navy or charcoal",
             "Smart elegant — no casual wear",
         ],
@@ -28,9 +28,7 @@ const logistics = [
         icon: "◎",
         title: "Accommodation",
         lines: [
-            "Eko Hotel & Suites — on-site",
-            "Radisson Blu — 5 mins away",
-            "Federal Palace Hotel — 10 mins away",
+            "Daffodil Hotel  — on-site",
             "Quote 'Faith & Joe Wedding' for group rates",
         ],
     },
@@ -38,7 +36,6 @@ const logistics = [
         icon: "◉",
         title: "Transportation",
         lines: [
-            "Shuttle from Eko Hotel every 30 mins",
             "Parking available on-site",
             "Uber & Bolt recommended",
             "Airport pickup available on request",
@@ -46,19 +43,17 @@ const logistics = [
     },
     {
         icon: "◐",
-        title: "Aso-Ebi Pickup",
+        title: "For Enquiry",
         lines: [
-            "Contact: +234 801 234 5678",
-            "Pickup location: Victoria Island",
-            "Available from: October 1st",
-            "Payment via transfer only",
+            "Contact: +234 66099976, +234 9039392341",
+
         ],
     },
     {
         icon: "◑",
         title: "Special Notes",
         lines: [
-            "Children welcome at the reception",
+            "Children are allowed at the reception",
             "Dietary needs — indicate on RSVP",
             "Photography allowed during reception",
             "Gift registry available below",
