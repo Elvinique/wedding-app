@@ -7,7 +7,7 @@ const bankAccounts = [
     {
         bank: "Gtbank",
         accountName: "Lekie Faith Burabari",
-        accountNumber: "30152898738",
+        accountNumber: "0152898738",
     },
     {
         bank: "ECOBank",
