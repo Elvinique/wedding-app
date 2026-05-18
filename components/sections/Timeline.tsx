@@ -4,38 +4,45 @@ import { motion } from "framer-motion";
 
 const events = [
     {
-        year: "October 2025",
-        title: "First Meeting",
+        year: "Once Upon a Time",
+        title: "A Name I Already Knew",
         description:
-            "Two souls crossed paths at a mutual friend's gathering in Lagos. A glance, a smile, and the rest was destiny.",
+            "She was a teenager when she first heard his name — Dumpe — the same surname as her family. He lived in the neighborhood, close to her family, yet their paths never crossed. She knew his name but had never seen his face.",
         icon: "✦",
     },
     {
-        year: "2026",
-        title: "First Date",
+        year: "1st December 2025",
+        title: "The Friend Request",
         description:
-            "A quiet dinner at a rooftop restaurant overlooking the Lagos skyline. They talked until the city lights went dim.",
+            "A Facebook friend request changed everything. Little did she know that accepting it would lead her straight to the love of her life. One click — and forever began.",
         icon: "♡",
     },
     {
-        year: "2026",
-        title: "The Proposal",
+        year: "A Week Later",
+        title: "Love at First Sight",
         description:
-            "Under a canopy of stars on the Lekki waterfront, he got down on one knee. She said yes before he finished the sentence.",
+            "Their first date arrived, and for her it was unmistakable — love at first sight. His style, his smile, his lips, his humor, and the way he made her heart feel safe and alive all at once. Saying yes to being his girlfriend came naturally.",
         icon: "◇",
     },
     {
-        year: "2026",
-        title: "Engagement",
+        year: "28th December 2025",
+        title: "He Asked, She Said Yes",
         description:
-            "Surrounded by family and friends, they celebrated their love the Nigerian way — with music, food, and plenty of dancing.",
+            "He got down on one knee and asked her to marry him. Without a moment's hesitation, her answer was yes. He had already been dreaming of making her his wife — and now she knew it too.",
         icon: "❋",
     },
     {
-        year: "2026",
-        title: "The Wedding",
+        year: "January 2026",
+        title: "Two Families, One Forever",
         description:
-            "Today, they begin forever. Thank you for being part of this moment.",
+            "He came with his family to seek her hand in marriage. It was the beautiful, official beginning of their forever — two families becoming one.",
+        icon: "◈",
+    },
+    {
+        year: "Today",
+        title: "My King, My Crown",
+        description:
+            "You are not just my husband, but my best friend, my peace, and my favorite person in the world. Loving you feels effortless. Cheers to forever with you. ❤️",
         icon: "♔",
     },
 ];
