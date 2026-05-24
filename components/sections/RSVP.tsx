@@ -94,6 +94,9 @@ export default function RSVP() {
   const [qrCode, setQrCode] = useState<string>("");
   const { bride, groom } = weddingConfig.couple;
 
+  const rsvpDeadline = new Date("2026-06-15T23:59:59");
+  const isDeadlinePassed = new Date() > rsvpDeadline;
+
   const {
     register,
     handleSubmit,
@@ -153,7 +156,7 @@ export default function RSVP() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          Kindly Reply By June 1st
+          Kindly Reply By June 15th
         </motion.p>
         <motion.h2
           className="section-title"
@@ -174,232 +177,291 @@ export default function RSVP() {
         />
       </div>
 
-      <AnimatePresence mode="wait">
-        {!submitted ? (
-          <motion.div
-            key="form"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.6 }}
+      {isDeadlinePassed ? (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          style={{
+            maxWidth: "560px",
+            margin: "0 auto",
+            backgroundColor: "white",
+            padding: "3.5rem 2.5rem",
+            boxShadow: "0 4px 32px rgba(0,0,0,0.07)",
+            textAlign: "center",
+          }}
+        >
+          <div
             style={{
-              maxWidth: "560px",
-              margin: "0 auto",
-              backgroundColor: "white",
-              padding: "2.5rem",
-              boxShadow: "0 4px 32px rgba(0,0,0,0.07)",
+              fontSize: "2.5rem",
+              color: "var(--color-gold)",
+              marginBottom: "1.25rem",
             }}
           >
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <InputField label="Full Name" error={errors.fullName?.message}>
-                <input
-                  {...register("fullName")}
-                  placeholder="e.g. Barile James"
-                  style={inputStyle}
-                  onFocus={handleFocus}
-                />
-              </InputField>
+            ♡
+          </div>
+          <h3
+            style={{
+              fontFamily: "var(--font-serif)",
+              fontSize: "1.8rem",
+              color: "var(--color-charcoal)",
+              marginBottom: "1rem",
+            }}
+          >
+            RSVP Closed
+          </h3>
+          <div className="gold-divider" />
+          <p
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontSize: "0.95rem",
+              color: "rgba(31,31,31,0.65)",
+              lineHeight: 1.8,
+              marginBottom: "1.5rem",
+            }}
+          >
+            RSVP submissions closed on June 15th, 2026. We are no longer
+            accepting new responses. If you have already RSVP'd, please check
+            your email for your QR code entry pass.
+          </p>
+          <p
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontSize: "0.75rem",
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: "var(--color-gold)",
+            }}
+          >
+            {weddingConfig.couple.hashtag}
+          </p>
+        </motion.div>
+      ) : (
+        <AnimatePresence mode="wait">
+          {!submitted ? (
+            <motion.div
+              key="form"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.6 }}
+              style={{
+                maxWidth: "560px",
+                margin: "0 auto",
+                backgroundColor: "white",
+                padding: "2.5rem",
+                boxShadow: "0 4px 32px rgba(0,0,0,0.07)",
+              }}
+            >
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <InputField label="Full Name" error={errors.fullName?.message}>
+                  <input
+                    {...register("fullName")}
+                    placeholder="e.g. Barile James"
+                    style={inputStyle}
+                    onFocus={handleFocus}
+                  />
+                </InputField>
 
-              <InputField label="Email Address" error={errors.email?.message}>
-                <input
-                  {...register("email")}
-                  type="email"
-                  placeholder="e.g. barile@email.com"
-                  style={inputStyle}
-                  onFocus={handleFocus}
-                />
-              </InputField>
+                <InputField label="Email Address" error={errors.email?.message}>
+                  <input
+                    {...register("email")}
+                    type="email"
+                    placeholder="e.g. barile@email.com"
+                    style={inputStyle}
+                    onFocus={handleFocus}
+                  />
+                </InputField>
 
-              <InputField label="Phone Number" error={errors.phone?.message}>
-                <input
-                  {...register("phone")}
-                  type="tel"
-                  placeholder="e.g. +234 801 234 5678"
-                  style={inputStyle}
-                  onFocus={handleFocus}
-                />
-              </InputField>
+                <InputField label="Phone Number" error={errors.phone?.message}>
+                  <input
+                    {...register("phone")}
+                    type="tel"
+                    placeholder="e.g. +234 801 234 5678"
+                    style={inputStyle}
+                    onFocus={handleFocus}
+                  />
+                </InputField>
 
-              <InputField
-                label="Will you be attending?"
-                error={errors.attendance?.message}
-              >
-                <select
-                  {...register("attendance")}
-                  style={inputStyle}
-                  onFocus={handleFocus}
+                <InputField
+                  label="Will you be attending?"
+                  error={errors.attendance?.message}
                 >
-                  <option value="">— Select —</option>
-                  <option value="yes">Joyfully accepts</option>
-                  <option value="no">Regretfully declines</option>
-                </select>
-              </InputField>
-
-              {attendance === "yes" && (
-                <>
-                  <InputField
-                    label="Number of Guests"
-                    error={errors.guestCount?.message}
+                  <select
+                    {...register("attendance")}
+                    style={inputStyle}
+                    onFocus={handleFocus}
                   >
-                    <input
-                      {...register("guestCount", { valueAsNumber: true })}
-                      type="number"
-                      min={1}
-                      max={5}
-                      style={inputStyle}
-                      onFocus={handleFocus}
-                    />
-                  </InputField>
+                    <option value="">— Select —</option>
+                    <option value="yes">Joyfully accepts</option>
+                    <option value="no">Regretfully declines</option>
+                  </select>
+                </InputField>
 
-                  <InputField
-                    label="Dietary Restrictions (optional)"
-                    error={errors.dietary?.message}
+                {attendance === "yes" && (
+                  <>
+                    <InputField
+                      label="Number of Guests"
+                      error={errors.guestCount?.message}
+                    >
+                      <input
+                        {...register("guestCount", { valueAsNumber: true })}
+                        type="number"
+                        min={1}
+                        max={5}
+                        style={inputStyle}
+                        onFocus={handleFocus}
+                      />
+                    </InputField>
+
+                    <InputField
+                      label="Dietary Restrictions (optional)"
+                      error={errors.dietary?.message}
+                    >
+                      <textarea
+                        {...register("dietary")}
+                        placeholder="e.g. Vegetarian, no nuts, halal..."
+                        rows={3}
+                        style={{ ...inputStyle, resize: "none" }}
+                        onFocus={handleFocus}
+                      />
+                    </InputField>
+                  </>
+                )}
+
+                {error && (
+                  <p
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontSize: "0.8rem",
+                      color: "#e53e3e",
+                      marginBottom: "1rem",
+                      textAlign: "center",
+                      lineHeight: 1.6,
+                    }}
                   >
-                    <textarea
-                      {...register("dietary")}
-                      placeholder="e.g. Vegetarian, no nuts, halal..."
-                      rows={3}
-                      style={{ ...inputStyle, resize: "none" }}
-                      onFocus={handleFocus}
-                    />
-                  </InputField>
-                </>
-              )}
+                    {error}
+                  </p>
+                )}
 
-              {/* Error Message */}
-              {error && (
-                <p
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="btn-gold"
                   style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "0.8rem",
-                    color: "#e53e3e",
-                    marginBottom: "1rem",
+                    width: "100%",
+                    cursor: isSubmitting ? "not-allowed" : "pointer",
+                    opacity: isSubmitting ? 0.7 : 1,
                     textAlign: "center",
-                    lineHeight: 1.6,
+                    border: "none",
+                    padding: "1rem",
                   }}
                 >
-                  {error}
-                </p>
-              )}
-
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="btn-gold"
+                  {isSubmitting ? "Sending..." : "Confirm Attendance"}
+                </button>
+              </form>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="success"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6 }}
+              style={{
+                maxWidth: "560px",
+                margin: "0 auto",
+                backgroundColor: "white",
+                padding: "3.5rem 2.5rem",
+                boxShadow: "0 4px 32px rgba(0,0,0,0.07)",
+                textAlign: "center",
+              }}
+            >
+              <div
                 style={{
-                  width: "100%",
-                  cursor: isSubmitting ? "not-allowed" : "pointer",
-                  opacity: isSubmitting ? 0.7 : 1,
-                  textAlign: "center",
-                  border: "none",
-                  padding: "1rem",
+                  fontSize: "2.5rem",
+                  color: "var(--color-gold)",
+                  marginBottom: "1.25rem",
                 }}
               >
-                {isSubmitting ? "Sending..." : "Confirm Attendance"}
-              </button>
-            </form>
-          </motion.div>
-        ) : (
-          <motion.div
-            key="success"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            style={{
-              maxWidth: "560px",
-              margin: "0 auto",
-              backgroundColor: "white",
-              padding: "3.5rem 2.5rem",
-              boxShadow: "0 4px 32px rgba(0,0,0,0.07)",
-              textAlign: "center",
-            }}
-          >
-            <div
-              style={{
-                fontSize: "2.5rem",
-                color: "var(--color-gold)",
-                marginBottom: "1.25rem",
-              }}
-            >
-              ♡
-            </div>
-            <h3
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: "1.8rem",
-                color: "var(--color-charcoal)",
-                marginBottom: "1rem",
-              }}
-            >
-              Thank you, {submittedName}!
-            </h3>
-            <div className="gold-divider" />
-            <p
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "0.95rem",
-                color: "rgba(31,31,31,0.65)",
-                lineHeight: 1.8,
-                marginBottom: "2rem",
-              }}
-            >
-              Your RSVP has been received. We are so excited to celebrate with
-              you as {bride} & {groom} begin their forever.
-            </p>
-
-            {/* QR Code */}
-            {qrCode && (
-              <div style={{ marginBottom: "2rem" }}>
-                <p
-                  style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "0.75rem",
-                    letterSpacing: "0.2em",
-                    textTransform: "uppercase",
-                    color: "var(--color-gold)",
-                    marginBottom: "1rem",
-                  }}
-                >
-                  Your Entry QR Code
-                </p>
-                <img
-                  src={`data:image/png;base64,${qrCode}`}
-                  alt="Your QR Code"
-                  style={{
-                    width: "180px",
-                    height: "180px",
-                    margin: "0 auto",
-                    display: "block",
-                    border: "4px solid var(--color-cream-dark)",
-                  }}
-                />
-                <p
-                  style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "0.75rem",
-                    color: "rgba(31,31,31,0.4)",
-                    marginTop: "0.75rem",
-                  }}
-                >
-                  Screenshot this code — show it at the entrance
-                </p>
+                ♡
               </div>
-            )}
+              <h3
+                style={{
+                  fontFamily: "var(--font-serif)",
+                  fontSize: "1.8rem",
+                  color: "var(--color-charcoal)",
+                  marginBottom: "1rem",
+                }}
+              >
+                Thank you, {submittedName}!
+              </h3>
+              <div className="gold-divider" />
+              <p
+                style={{
+                  fontFamily: "var(--font-sans)",
+                  fontSize: "0.95rem",
+                  color: "rgba(31,31,31,0.65)",
+                  lineHeight: 1.8,
+                  marginBottom: "2rem",
+                }}
+              >
+                Your RSVP has been received. We are so excited to celebrate
+                with you as {bride} & {groom} begin their forever.
+              </p>
 
-            <p
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "0.75rem",
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                color: "var(--color-gold)",
-              }}
-            >
-              {weddingConfig.couple.hashtag}
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              {qrCode && (
+                <div style={{ marginBottom: "2rem" }}>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontSize: "0.75rem",
+                      letterSpacing: "0.2em",
+                      textTransform: "uppercase",
+                      color: "var(--color-gold)",
+                      marginBottom: "1rem",
+                    }}
+                  >
+                    Your Entry QR Code
+                  </p>
+                  <img
+                    src={`data:image/png;base64,${qrCode}`}
+                    alt="Your QR Code"
+                    style={{
+                      width: "180px",
+                      height: "180px",
+                      margin: "0 auto",
+                      display: "block",
+                      border: "4px solid var(--color-cream-dark)",
+                    }}
+                  />
+                  <p
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontSize: "0.75rem",
+                      color: "rgba(31,31,31,0.4)",
+                      marginTop: "0.75rem",
+                    }}
+                  >
+                    Screenshot this code — show it at the entrance
+                  </p>
+                </div>
+              )}
+
+              <p
+                style={{
+                  fontFamily: "var(--font-sans)",
+                  fontSize: "0.75rem",
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  color: "var(--color-gold)",
+                }}
+              >
+                {weddingConfig.couple.hashtag}
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      )}
     </section>
   );
 }
