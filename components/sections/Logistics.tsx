@@ -19,11 +19,11 @@ const logistics: LogisticsItem[] = [
       "Smart elegant — no casual wear",
     ],
     swatches: [
-      { color: "#C6A664", label: "Gold" },
-      { color: "#D4BA83", label: "Champagne" },
-      { color: "#1F2A44", label: "Navy" },
-      { color: "#1F1F1F", label: "Charcoal" },
-    ],
+  { color: "#98D8C8", label: "Mint Green" },
+  { color: "#CC5500", label: "Burnt Orange" },
+  { color: "#6F4E37", label: "Coffee Brown" },
+  { color: "#FFFFFF", label: "White" },
+],
   },
   {
     icon: "◷",
