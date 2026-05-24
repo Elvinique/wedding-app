@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Faith & Joe's Wedding 💍",
-    description: "Join us as we celebrate the union of Faith and Joe on November 15, 2026. You are invited!",
+    description: "Join us as we celebrate the union of Faith and Joe on June 27, 2026. You are invited!",
     url: "https://www.faithwedsjoe2026.com.ng",
     siteName: "Faith & Joe's Wedding",
     images: [
