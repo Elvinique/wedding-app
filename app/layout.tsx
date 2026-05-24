@@ -2,8 +2,11 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Faith & Joe's Wedding | 27 June 2026",
+  title: "Faith & Joe's Wedding | 27 June, 2026",
   description: "Join us as we celebrate the union of Faith and Joe. RSVP, view the venue, and be part of our special day.",
+  icons: {
+    icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>",
+  },
   openGraph: {
     title: "Faith & Joe's Wedding 💍",
     description: "Join us as we celebrate the union of Faith and Joe on November 15, 2026. You are invited!",
