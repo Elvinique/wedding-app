@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import ServiceWorker from "@/components/ui/ServiceWorker";
 
 export const metadata: Metadata = {
   title: "Faith & Joe's Wedding | 27 June, 2026",
   description: "Join us as we celebrate the union of Faith and Joe. RSVP, view the venue, and be part of our special day.",
+  manifest: "/manifest.json",
   icons: {
     icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>",
+    apple: "/icons/icon-192x192.png",
   },
   openGraph: {
     title: "Faith & Joe's Wedding 💍",
@@ -38,7 +41,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <ServiceWorker />
+        {children}
+      </body>
     </html>
   );
 }

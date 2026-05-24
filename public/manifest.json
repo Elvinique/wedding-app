@@ -1,0 +1,24 @@
+{
+  "name": "Faith & Joe's Wedding",
+  "short_name": "Faith & Joe",
+  "description": "You are invited to the wedding of Faith & Joe on June 27, 2026",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F7F2EA",
+  "theme_color": "#C6A664",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ]
+}
