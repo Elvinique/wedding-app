@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Faith & Joe's Wedding | 15 November 2026",
+  title: "Faith & Joe's Wedding | 27 June 2026",
   description: "Join us as we celebrate the union of Faith and Joe. RSVP, view the venue, and be part of our special day.",
   openGraph: {
     title: "Faith & Joe's Wedding 💍",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Faith & Joe's Wedding 💍",
-    description: "You are invited! Join us on November 15, 2026.",
+    description: "You are invited! Join us on June 27, 2026.",
     images: ["https://www.faithwedsjoe2026.com.ng/images/hero.jpg"],
   },
 };
