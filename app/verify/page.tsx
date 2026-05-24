@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { api } from "@/lib/api";
 
@@ -12,25 +12,73 @@ interface GuestInfo {
   qr_verified: boolean;
 }
 
-type ScanStatus = "idle" | "loading" | "success" | "error" | "already_used";
+type ScanStatus = "idle" | "scanning" | "loading" | "success" | "error" | "already_used";
 
 export default function VerifyPage() {
   const [token, setToken] = useState("");
   const [status, setStatus] = useState<ScanStatus>("idle");
   const [guest, setGuest] = useState<GuestInfo | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const [scanMode, setScanMode] = useState<"manual" | "camera">("manual");
+  const scannerRef = useRef<unknown>(null);
+  const scannerDivRef = useRef<HTMLDivElement>(null);
 
-  const handleVerify = async () => {
-    if (!token.trim()) return;
+  useEffect(() => {
+    if (scanMode === "camera" && status === "idle") {
+      startScanner();
+    } else {
+      stopScanner();
+    }
+    return () => {
+      stopScanner();
+    };
+  }, [scanMode, status]);
 
+  const startScanner = async () => {
+    try {
+      const { Html5Qrcode } = await import("html5-qrcode");
+      if (!scannerDivRef.current) return;
+
+      const scanner = new Html5Qrcode("qr-scanner-div");
+      scannerRef.current = scanner;
+
+      await scanner.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: { width: 220, height: 220 } },
+        (decodedText: string) => {
+          stopScanner();
+          verifyToken(decodedText);
+        },
+        () => {}
+      );
+    } catch (err) {
+      console.error("Camera error:", err);
+      setScanMode("manual");
+    }
+  };
+
+  const stopScanner = async () => {
+    if (scannerRef.current) {
+      try {
+        const scanner = scannerRef.current as {
+          stop: () => Promise<void>;
+          clear: () => void;
+        };
+        await scanner.stop();
+        scanner.clear();
+      } catch {}
+      scannerRef.current = null;
+    }
+  };
+
+  const verifyToken = async (rawToken: string) => {
     setStatus("loading");
     setGuest(null);
     setErrorMessage("");
 
-    // Extract token from QR data if full QR string is pasted
-    const extracted = token.includes("WEDDING-VERIFY:")
-      ? token.replace("WEDDING-VERIFY:", "").trim()
-      : token.trim();
+    const extracted = rawToken.includes("WEDDING-VERIFY:")
+      ? rawToken.replace("WEDDING-VERIFY:", "").trim()
+      : rawToken.trim();
 
     try {
       const response = await api.get(`/api/rsvp/verify/${extracted}`);
@@ -40,8 +88,8 @@ export default function VerifyPage() {
     } catch (err: unknown) {
       const message =
         err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { error?: string } } }).response?.data
-              ?.error || ""
+          ? (err as { response?: { data?: { error?: string } } }).response
+              ?.data?.error || ""
           : "";
 
       if (message.toLowerCase().includes("already been used")) {
@@ -51,6 +99,11 @@ export default function VerifyPage() {
         setErrorMessage(message || "Invalid QR code. Please try again.");
       }
     }
+  };
+
+  const handleManualVerify = () => {
+    if (!token.trim()) return;
+    verifyToken(token);
   };
 
   const handleReset = () => {
@@ -73,7 +126,7 @@ export default function VerifyPage() {
       }}
     >
       {/* Header */}
-      <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+      <div style={{ textAlign: "center", marginBottom: "2rem" }}>
         <p
           style={{
             fontFamily: "var(--font-sans)",
@@ -111,9 +164,48 @@ export default function VerifyPage() {
             color: "rgba(247,242,234,0.5)",
           }}
         >
-          Enter or paste the guest QR token to verify entry
+          Scan or enter the guest QR token to verify entry
         </p>
       </div>
+
+      {/* Mode Toggle */}
+      {(status === "idle" || status === "scanning") && (
+        <div
+          style={{
+            display: "flex",
+            gap: "0",
+            marginBottom: "1.5rem",
+            border: "1px solid rgba(198,166,100,0.3)",
+          }}
+        >
+          {(["manual", "camera"] as const).map((mode) => (
+            <button
+              key={mode}
+              onClick={() => {
+                setScanMode(mode);
+                setStatus("idle");
+              }}
+              style={{
+                padding: "0.6rem 1.5rem",
+                fontFamily: "var(--font-sans)",
+                fontSize: "0.7rem",
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                backgroundColor:
+                  scanMode === mode
+                    ? "var(--color-gold)"
+                    : "transparent",
+                color: scanMode === mode ? "white" : "rgba(247,242,234,0.5)",
+                border: "none",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+              }}
+            >
+              {mode === "manual" ? "✎ Manual" : "⊙ Scan QR"}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Scanner Card */}
       <div
@@ -126,77 +218,135 @@ export default function VerifyPage() {
         }}
       >
         <AnimatePresence mode="wait">
-          {/* Idle / Input State */}
-          {(status === "idle" || status === "loading") && (
+
+          {/* Camera Scanner */}
+          {scanMode === "camera" && status === "idle" && (
             <motion.div
-              key="input"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
+              key="camera"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <label
+              <p
                 style={{
-                  display: "block",
                   fontFamily: "var(--font-sans)",
-                  fontSize: "0.7rem",
-                  letterSpacing: "0.2em",
+                  fontSize: "0.75rem",
+                  letterSpacing: "0.1em",
+                  color: "rgba(247,242,234,0.5)",
+                  textAlign: "center",
+                  marginBottom: "1rem",
                   textTransform: "uppercase",
-                  color: "var(--color-gold)",
-                  marginBottom: "0.75rem",
                 }}
               >
-                QR Token
-              </label>
-              <input
-                value={token}
-                onChange={(e) => setToken(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleVerify()}
-                placeholder="Paste QR token or scan result here..."
-                autoFocus
+                Point camera at guest QR code
+              </p>
+              <div
+                id="qr-scanner-div"
+                ref={scannerDivRef}
                 style={{
                   width: "100%",
-                  padding: "0.85rem 1rem",
-                  fontFamily: "var(--font-sans)",
-                  fontSize: "0.85rem",
-                  color: "var(--color-charcoal)",
-                  backgroundColor: "var(--color-cream)",
+                  borderRadius: "4px",
+                  overflow: "hidden",
                   border: "1px solid rgba(198,166,100,0.3)",
-                  outline: "none",
-                  boxSizing: "border-box",
-                  marginBottom: "1.25rem",
                 }}
               />
+            </motion.div>
+          )}
 
-              <button
-                onClick={handleVerify}
-                disabled={status === "loading" || !token.trim()}
+          {/* Manual Input */}
+          {scanMode === "manual" &&
+            (status === "idle" || status === "loading") && (
+              <motion.div
+                key="input"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+              >
+                <label
+                  style={{
+                    display: "block",
+                    fontFamily: "var(--font-sans)",
+                    fontSize: "0.7rem",
+                    letterSpacing: "0.2em",
+                    textTransform: "uppercase",
+                    color: "var(--color-gold)",
+                    marginBottom: "0.75rem",
+                  }}
+                >
+                  QR Token
+                </label>
+                <input
+                  value={token}
+                  onChange={(e) => setToken(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleManualVerify()}
+                  placeholder="Paste QR token here..."
+                  autoFocus
+                  style={{
+                    width: "100%",
+                    padding: "0.85rem 1rem",
+                    fontFamily: "var(--font-sans)",
+                    fontSize: "0.85rem",
+                    color: "var(--color-charcoal)",
+                    backgroundColor: "var(--color-cream)",
+                    border: "1px solid rgba(198,166,100,0.3)",
+                    outline: "none",
+                    boxSizing: "border-box",
+                    marginBottom: "1.25rem",
+                  }}
+                />
+                <button
+                  onClick={handleManualVerify}
+                  disabled={status === "loading" || !token.trim()}
+                  style={{
+                    width: "100%",
+                    padding: "1rem",
+                    backgroundColor:
+                      status === "loading" || !token.trim()
+                        ? "rgba(198,166,100,0.4)"
+                        : "var(--color-gold)",
+                    color: "white",
+                    fontFamily: "var(--font-sans)",
+                    fontSize: "0.8rem",
+                    letterSpacing: "0.2em",
+                    textTransform: "uppercase",
+                    border: "none",
+                    cursor:
+                      status === "loading" || !token.trim()
+                        ? "not-allowed"
+                        : "pointer",
+                    transition: "all 0.3s ease",
+                  }}
+                >
+                  {status === "loading" ? "Verifying..." : "Verify Guest"}
+                </button>
+              </motion.div>
+            )}
+
+          {/* Loading for camera scan */}
+          {status === "loading" && scanMode === "camera" && (
+            <motion.div
+              key="loading"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              style={{ textAlign: "center", padding: "2rem" }}
+            >
+              <p
                 style={{
-                  width: "100%",
-                  padding: "1rem",
-                  backgroundColor:
-                    status === "loading" || !token.trim()
-                      ? "rgba(198,166,100,0.4)"
-                      : "var(--color-gold)",
-                  color: "white",
                   fontFamily: "var(--font-sans)",
                   fontSize: "0.8rem",
                   letterSpacing: "0.2em",
                   textTransform: "uppercase",
-                  border: "none",
-                  cursor:
-                    status === "loading" || !token.trim()
-                      ? "not-allowed"
-                      : "pointer",
-                  transition: "all 0.3s ease",
+                  color: "rgba(247,242,234,0.5)",
                 }}
               >
-                {status === "loading" ? "Verifying..." : "Verify Guest"}
-              </button>
+                Verifying...
+              </p>
             </motion.div>
           )}
 
-          {/* Success State */}
+          {/* Success */}
           {status === "success" && guest && (
             <motion.div
               key="success"
@@ -218,11 +368,11 @@ export default function VerifyPage() {
                   justifyContent: "center",
                   margin: "0 auto 1.5rem",
                   fontSize: "1.75rem",
+                  color: "#48C78E",
                 }}
               >
                 ✓
               </div>
-
               <h2
                 style={{
                   fontFamily: "var(--font-serif)",
@@ -233,7 +383,6 @@ export default function VerifyPage() {
               >
                 Welcome!
               </h2>
-
               <p
                 style={{
                   fontFamily: "var(--font-sans)",
@@ -245,7 +394,6 @@ export default function VerifyPage() {
               >
                 {guest.full_name}
               </p>
-
               <div
                 style={{
                   backgroundColor: "rgba(255,255,255,0.05)",
@@ -279,7 +427,6 @@ export default function VerifyPage() {
                     {guest.guest_count === 1 ? "person" : "people"}
                   </span>
                 </div>
-
                 <div>
                   <span
                     style={{
@@ -305,7 +452,6 @@ export default function VerifyPage() {
                   </span>
                 </div>
               </div>
-
               <button
                 onClick={handleReset}
                 style={{
@@ -326,7 +472,7 @@ export default function VerifyPage() {
             </motion.div>
           )}
 
-          {/* Already Used State */}
+          {/* Already Used */}
           {status === "already_used" && (
             <motion.div
               key="already_used"
@@ -352,7 +498,6 @@ export default function VerifyPage() {
               >
                 ⚠
               </div>
-
               <h2
                 style={{
                   fontFamily: "var(--font-serif)",
@@ -363,7 +508,6 @@ export default function VerifyPage() {
               >
                 Already Checked In
               </h2>
-
               <p
                 style={{
                   fontFamily: "var(--font-sans)",
@@ -373,10 +517,9 @@ export default function VerifyPage() {
                   marginBottom: "1.5rem",
                 }}
               >
-                This QR code has already been used for entry. Please check with
-                a supervisor if you believe this is an error.
+                This QR code has already been used for entry. Please check
+                with a supervisor if you believe this is an error.
               </p>
-
               <button
                 onClick={handleReset}
                 style={{
@@ -397,7 +540,7 @@ export default function VerifyPage() {
             </motion.div>
           )}
 
-          {/* Error State */}
+          {/* Error */}
           {status === "error" && (
             <motion.div
               key="error"
@@ -419,11 +562,11 @@ export default function VerifyPage() {
                   justifyContent: "center",
                   margin: "0 auto 1.5rem",
                   fontSize: "1.75rem",
+                  color: "#FF3860",
                 }}
               >
                 ✕
               </div>
-
               <h2
                 style={{
                   fontFamily: "var(--font-serif)",
@@ -434,7 +577,6 @@ export default function VerifyPage() {
               >
                 Invalid QR Code
               </h2>
-
               <p
                 style={{
                   fontFamily: "var(--font-sans)",
@@ -446,7 +588,6 @@ export default function VerifyPage() {
               >
                 {errorMessage}
               </p>
-
               <button
                 onClick={handleReset}
                 style={{
@@ -469,7 +610,6 @@ export default function VerifyPage() {
         </AnimatePresence>
       </div>
 
-      {/* Footer */}
       <p
         style={{
           fontFamily: "var(--font-sans)",
