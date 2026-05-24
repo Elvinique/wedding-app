@@ -163,23 +163,26 @@ export default function Hero() {
                 </motion.p>
 
                 {/* Countdown */}
-                <motion.div
-                    style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        gap: "clamp(1.5rem, 5vw, 3rem)",
-                        marginBottom: "3rem",
-                    }}
-                    variants={fadeUp}
-                    initial="hidden"
-                    animate="visible"
-                    custom={0.8}
-                >
-                    <CountdownBox value={days} label="Days" />
-                    <CountdownBox value={hours} label="Hours" />
-                    <CountdownBox value={minutes} label="Mins" />
-                    <CountdownBox value={seconds} label="Secs" />
-                </motion.div>
+<motion.div
+  style={{
+    display: "flex",
+    justifyContent: "center",
+    gap: "clamp(1.5rem, 5vw, 3rem)",
+    marginBottom: "3rem",
+  }}
+  variants={fadeUp}
+  initial="hidden"
+  animate="visible"
+  custom={0.8}
+>
+  <CountdownBox value={days} label="Days" />
+  <CountdownBox value={hours} label="Hours" />
+  {/* Show mins and secs only on larger screens */}
+  <span style={{ display: "contents" }} className="desktop-countdown">
+    <CountdownBox value={minutes} label="Mins" />
+    <CountdownBox value={seconds} label="Secs" />
+  </span>
+</motion.div>
 
                 {/* CTA Buttons */}
                 <motion.div

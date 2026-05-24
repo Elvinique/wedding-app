@@ -19,7 +19,12 @@
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
 }
-
+/* Hide mins and secs on mobile */
+@media (max-width: 480px) {
+  .desktop-countdown {
+    display: none !important;
+  }
+}
 @layer base {
   html {
     scroll-behavior: smooth;
