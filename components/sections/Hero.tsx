@@ -16,27 +16,27 @@ const fadeUp: Variants = {
 };
 
 function CountdownBox({ value, label }: { value: number; label: string }) {
-    return (
-        <div className="flex flex-col items-center">
-            <span
-                style={{
-                    fontFamily: "var(--font-serif)",
-                    fontSize: "clamp(1.8rem, 6vw, 3rem)",
-                    color: "var(--color-gold)",
-                    lineHeight: 1,
-                }}
-            >
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <span
+        style={{
+          fontFamily: "var(--font-serif)",
+          fontSize: "clamp(1.4rem, 5vw, 3rem)",
+          color: "var(--color-gold)",
+          lineHeight: 1,
+        }}
+      >
                 {String(value).padStart(2, "0")}
             </span>
             <span
                 style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "0.65rem",
-                    letterSpacing: "0.25em",
-                    textTransform: "uppercase",
-                    color: "rgba(247,242,234,0.6)",
-                    marginTop: "0.4rem",
-                }}
+  fontFamily: "var(--font-sans)",
+  fontSize: "clamp(0.5rem, 1.5vw, 0.65rem)",
+  letterSpacing: "0.2em",
+  textTransform: "uppercase",
+  color: "rgba(247,242,234,0.6)",
+  marginTop: "0.4rem",
+}}
             >
                 {label}
             </span>
@@ -162,13 +162,14 @@ export default function Hero() {
                     {weddingDateFormatted}
                 </motion.p>
 
-                {/* Countdown */}
+             {/* Countdown */}
 <motion.div
   style={{
     display: "flex",
     justifyContent: "center",
-    gap: "clamp(1.5rem, 5vw, 3rem)",
+    gap: "clamp(1rem, 4vw, 3rem)",
     marginBottom: "3rem",
+    width: "100%",
   }}
   variants={fadeUp}
   initial="hidden"
@@ -177,11 +178,8 @@ export default function Hero() {
 >
   <CountdownBox value={days} label="Days" />
   <CountdownBox value={hours} label="Hours" />
-  {/* Show mins and secs only on larger screens */}
-  <span style={{ display: "contents" }} className="desktop-countdown">
-    <CountdownBox value={minutes} label="Mins" />
-    <CountdownBox value={seconds} label="Secs" />
-  </span>
+  <CountdownBox value={minutes} label="Mins" />
+  <CountdownBox value={seconds} label="Secs" />
 </motion.div>
 
                 {/* CTA Buttons */}
