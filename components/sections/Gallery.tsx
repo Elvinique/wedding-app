@@ -8,17 +8,17 @@ import "yet-another-react-lightbox/styles.css";
 const photos = [
   {
     src: "/images/gallery-1.jpg",
-    alt: "Wedding moment 1",
+    alt: "TM moment 1",
     caption: "Together Forever",
   },
   {
     src: "/images/gallery-2.jpg",
-    alt: "Wedding moment 2",
+    alt: "She said yes",
     caption: "Our Special Day",
   },
   {
     src: "/images/gallery-3.jpg",
-    alt: "Wedding moment 3",
+    alt: "Friendship  moment ",
     caption: "Love & Joy",
   },
 ];
