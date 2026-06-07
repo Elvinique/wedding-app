@@ -40,18 +40,18 @@ const fallbackEvents: TimelineEvent[] = [
   },
   {
     id: "4",
-    year: "Early 2026",
-    title: "Something Rare",
-    description: "With every conversation and every memory created together, it became clear that what they had found was something rare. Through life's highs and lows, they learned to lean on each other.",
-    icon: "❋",
-    position: 3,
-  },
-  {
-    id: "5",
     year: "28th December 2025",
     title: "He Asked, She Said Yes",
     description: "Grateful for every twist, turn, and unexpected moment that led them back to one another, he got down on one knee. Without hesitation, she said yes.",
     icon: "◈",
+    position: 3,
+  },
+  {
+    id: "5",
+    year: "Early 2026",
+    title: "Something Rare",
+    description: "With every conversation and every memory created together, it became clear that what they had found was something rare. Through life's highs and lows, they learned to lean on each other.",
+    icon: "❋",
     position: 4,
   },
   {
