@@ -8,7 +8,6 @@ import "yet-another-react-lightbox/styles.css";
 const photos = [
   { src: "/images/gallery-1.jpg", alt: "Gallery moment 1", caption: "" },
   { src: "/images/gallery-2.jpg", alt: "Gallery moment 2", caption: "" },
-  { src: "/images/gallery-3.jpg", alt: "Gallery moment 3", caption: "" },
   { src: "/images/gallery-4.jpg", alt: "Gallery moment 4", caption: "" },
   { src: "/images/gallery-5.jpg", alt: "Gallery moment 5", caption: "" },
   { src: "/images/gallery-7.jpg", alt: "Gallery moment 7", caption: "" },
