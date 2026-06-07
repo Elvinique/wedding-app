@@ -11,7 +11,6 @@ const photos = [
   { src: "/images/gallery-3.jpg", alt: "Gallery moment 3", caption: "" },
   { src: "/images/gallery-4.jpg", alt: "Gallery moment 4", caption: "" },
   { src: "/images/gallery-5.jpg", alt: "Gallery moment 5", caption: "" },
-  { src: "/images/gallery-6.jpg", alt: "Gallery moment 6", caption: "" },
   { src: "/images/gallery-7.jpg", alt: "Gallery moment 7", caption: "" },
   { src: "/images/gallery-8.jpg", alt: "Gallery moment 8", caption: "" },
   { src: "/images/gallery-9.jpg", alt: "Gallery moment 9", caption: "" },
