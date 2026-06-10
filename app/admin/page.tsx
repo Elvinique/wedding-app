@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { supabase } from "@/lib/supabase";
+import { supabase, supabaseAdmin } from "@/lib/supabase";
 import { api } from "@/lib/api";
 
 const ADMIN_PASSWORD = "faithjoe2026admin";
@@ -131,10 +131,10 @@ export default function AdminPage() {
     try {
       const ext = file.name.split(".").pop();
       const path = `hero/hero-${Date.now()}.${ext}`;
-      const { error } = await supabase.storage.from("wedding-images").upload(path, file, { upsert: true });
+      const { error } = await supabaseAdmin.storage.from("wedding-images").upload(path, file, { upsert: true });
       if (error) throw error;
-      const { data: urlData } = supabase.storage.from("wedding-images").getPublicUrl(path);
-      await supabase.from("wedding_content").upsert({ key: "hero_image_url", value: urlData.publicUrl });
+      const { data: urlData } = supabaseAdmin.storage.from("wedding-images").getPublicUrl(path);
+      await supabaseAdmin.from("wedding_content").upsert({ key: "hero_image_url", value: urlData.publicUrl });
       setContent((prev) => ({ ...prev, hero_image_url: urlData.publicUrl }));
       setSaveStatus("Hero image updated successfully!");
       setTimeout(() => setSaveStatus(""), 3000);
@@ -154,10 +154,10 @@ export default function AdminPage() {
       for (const file of Array.from(files)) {
         const ext = file.name.split(".").pop();
         const path = `gallery/gallery-${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-        const { error } = await supabase.storage.from("wedding-images").upload(path, file);
+        const { error } = await supabaseAdmin.storage.from("wedding-images").upload(path, file);
         if (error) throw error;
-        const { data: urlData } = supabase.storage.from("wedding-images").getPublicUrl(path);
-        await supabase.from("gallery_images").insert({ url: urlData.publicUrl, caption: "", position: galleryImages.length });
+        const { data: urlData } = supabaseAdmin.storage.from("wedding-images").getPublicUrl(path);
+        await supabaseAdmin.from("gallery_images").insert({ url: urlData.publicUrl, caption: "", position: galleryImages.length });
       }
       const { data } = await supabase.from("gallery_images").select("*").order("position");
       if (data) setGalleryImages(data);
@@ -172,12 +172,12 @@ export default function AdminPage() {
   };
 
   const handleDeleteGalleryImage = async (id: string) => {
-    await supabase.from("gallery_images").delete().eq("id", id);
+    await supabaseAdmin.from("gallery_images").delete().eq("id", id);
     setGalleryImages((prev) => prev.filter((img) => img.id !== id));
   };
 
   const handleUpdateCaption = async (id: string, caption: string) => {
-    await supabase.from("gallery_images").update({ caption }).eq("id", id);
+    await supabaseAdmin.from("gallery_images").update({ caption }).eq("id", id);
     setGalleryImages((prev) => prev.map((img) => img.id === id ? { ...img, caption } : img));
   };
 
@@ -185,7 +185,7 @@ export default function AdminPage() {
     setSaveStatus("Saving...");
     try {
       const updates = Object.entries(content).map(([key, value]) => ({ key, value, updated_at: new Date().toISOString() }));
-      await supabase.from("wedding_content").upsert(updates, { onConflict: "key" });
+      await supabaseAdmin.from("wedding_content").upsert(updates, { onConflict: "key" });
       setSaveStatus("Changes saved successfully!");
       setTimeout(() => setSaveStatus(""), 3000);
     } catch (err) {
@@ -198,7 +198,7 @@ export default function AdminPage() {
     setSaveStatus("Saving...");
     try {
       for (const event of timelineEvents) {
-        await supabase.from("timeline_events").upsert(event, { onConflict: "id" });
+        await supabaseAdmin.from("timeline_events").upsert(event, { onConflict: "id" });
       }
       setSaveStatus("Timeline saved successfully!");
       setTimeout(() => setSaveStatus(""), 3000);
@@ -210,12 +210,12 @@ export default function AdminPage() {
 
   const handleAddTimelineEvent = async () => {
     const newEvent = { year: "2026", title: "New Moment", description: "Describe this moment...", icon: "♡", position: timelineEvents.length };
-    const { data } = await supabase.from("timeline_events").insert(newEvent).select().single();
+    const { data } = await supabaseAdmin.from("timeline_events").insert(newEvent).select().single();
     if (data) setTimelineEvents((prev) => [...prev, data]);
   };
 
   const handleDeleteTimelineEvent = async (id: string) => {
-    await supabase.from("timeline_events").delete().eq("id", id);
+    await supabaseAdmin.from("timeline_events").delete().eq("id", id);
     setTimelineEvents((prev) => prev.filter((e) => e.id !== id));
   };
 
@@ -269,7 +269,6 @@ export default function AdminPage() {
             Dashboard
           </h1>
           <div style={{ width: "48px", height: "1px", backgroundColor: "var(--color-gold)", margin: "1rem auto 2rem" }} />
-
           <div style={{ position: "relative", marginBottom: "1rem" }}>
             <input
               type={showPassword ? "text" : "password"}
@@ -286,13 +285,11 @@ export default function AdminPage() {
               {showPassword ? "🙈" : "👁"}
             </button>
           </div>
-
           {passwordError && (
             <p style={{ fontFamily: "var(--font-sans)", fontSize: "0.8rem", color: "#FF3860", marginBottom: "1rem" }}>
               {passwordError}
             </p>
           )}
-
           <button
             onClick={handleLogin}
             style={{ width: "100%", padding: "1rem", backgroundColor: "var(--color-gold)", color: "white", fontFamily: "var(--font-sans)", fontSize: "0.8rem", letterSpacing: "0.2em", textTransform: "uppercase", border: "none", cursor: "pointer" }}
@@ -307,7 +304,6 @@ export default function AdminPage() {
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "var(--color-cream)", padding: "0" }}>
 
-      {/* Top Bar */}
       <div style={{ backgroundColor: "var(--color-charcoal)", padding: "1rem 2rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div>
           <p style={{ fontFamily: "var(--font-sans)", fontSize: "0.65rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "var(--color-gold)", marginBottom: "0.2rem" }}>
@@ -322,7 +318,6 @@ export default function AdminPage() {
         </a>
       </div>
 
-      {/* Save Status */}
       <AnimatePresence>
         {saveStatus && (
           <motion.div
@@ -337,8 +332,6 @@ export default function AdminPage() {
       </AnimatePresence>
 
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "2rem 1.5rem" }}>
-
-        {/* Tabs */}
         <div style={{ display: "flex", gap: 0, marginBottom: "2.5rem", borderBottom: "1px solid rgba(198,166,100,0.2)", overflowX: "auto" }}>
           {(["overview", "gallery", "timeline", "details", "guestbook"] as Tab[]).map((tab) => (
             <button key={tab} onClick={() => setActiveTab(tab)} style={tabStyle(tab)}>
@@ -359,7 +352,6 @@ export default function AdminPage() {
           </div>
         ) : (
           <>
-            {/* OVERVIEW TAB */}
             {activeTab === "overview" && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "1rem", marginBottom: "3rem" }}>
@@ -377,7 +369,6 @@ export default function AdminPage() {
                     </div>
                   ))}
                 </div>
-
                 <input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Search by name or email..." style={{ ...inputStyle, marginBottom: "1.5rem", maxWidth: "400px" }} />
                 <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                   {filteredRsvps.map((rsvp) => (
@@ -404,11 +395,9 @@ export default function AdminPage() {
               </motion.div>
             )}
 
-            {/* GALLERY TAB */}
             {activeTab === "gallery" && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
                 <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "1.5rem", color: "var(--color-charcoal)", marginBottom: "2rem" }}>Manage Images</h2>
-
                 <div style={{ backgroundColor: "white", padding: "2rem", boxShadow: "0 2px 16px rgba(0,0,0,0.06)", marginBottom: "2rem", borderTop: "2px solid var(--color-gold)" }}>
                   <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.2rem", color: "var(--color-charcoal)", marginBottom: "1rem" }}>Hero Image</h3>
                   {content.hero_image_url && (
@@ -419,7 +408,6 @@ export default function AdminPage() {
                     {uploadingHero ? "Uploading..." : "Upload New Hero Image"}
                   </button>
                 </div>
-
                 <div style={{ backgroundColor: "white", padding: "2rem", boxShadow: "0 2px 16px rgba(0,0,0,0.06)", borderTop: "2px solid var(--color-gold)" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", flexWrap: "wrap", gap: "1rem" }}>
                     <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.2rem", color: "var(--color-charcoal)" }}>Gallery Images</h3>
@@ -430,7 +418,6 @@ export default function AdminPage() {
                       </button>
                     </div>
                   </div>
-
                   {galleryImages.length === 0 ? (
                     <p style={{ fontFamily: "var(--font-sans)", fontSize: "0.875rem", color: "rgba(31,31,31,0.4)", textAlign: "center", padding: "2rem" }}>
                       No gallery images yet. Upload some!
@@ -454,7 +441,6 @@ export default function AdminPage() {
               </motion.div>
             )}
 
-            {/* TIMELINE TAB */}
             {activeTab === "timeline" && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem", flexWrap: "wrap", gap: "1rem" }}>
@@ -468,7 +454,6 @@ export default function AdminPage() {
                     </button>
                   </div>
                 </div>
-
                 <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
                   {timelineEvents.map((event, index) => (
                     <div key={event.id} style={{ backgroundColor: "white", padding: "1.5rem", boxShadow: "0 2px 16px rgba(0,0,0,0.06)", borderLeft: "3px solid var(--color-gold)" }}>
@@ -507,7 +492,6 @@ export default function AdminPage() {
               </motion.div>
             )}
 
-            {/* DETAILS TAB */}
             {activeTab === "details" && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem", flexWrap: "wrap", gap: "1rem" }}>
@@ -516,7 +500,6 @@ export default function AdminPage() {
                     Save Changes
                   </button>
                 </div>
-
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1.5rem" }}>
                   {[
                     { key: "bride_name", label: "Bride's Name" },
@@ -542,7 +525,6 @@ export default function AdminPage() {
               </motion.div>
             )}
 
-            {/* GUESTBOOK TAB */}
             {activeTab === "guestbook" && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
                 <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "1.5rem", color: "var(--color-charcoal)", marginBottom: "2rem" }}>Guestbook Messages</h2>
