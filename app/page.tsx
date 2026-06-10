@@ -7,6 +7,7 @@ import RSVP from "@/components/sections/RSVP";
 import GiftRegistry from "@/components/sections/GiftRegistry";
 import Guestbook from "@/components/sections/Guestbook";
 import WhatsAppShare from "@/components/ui/WhatsAppShare";
+import Footer from "@/components/sections/Footer";
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       <GiftRegistry />
       <Guestbook />
       <WhatsAppShare />
+      <Footer />
     </main>
   );
 }
